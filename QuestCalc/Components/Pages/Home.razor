@@ -1,0 +1,94 @@
+﻿@page "/"
+@rendermode InteractiveServer
+<PageTitle>Calculator</PageTitle>
+
+<style>
+    .form-check-label{
+        margin-right: 25px;
+    }
+</style>
+
+<div style="flex-direction: column" class="d-flex">
+    <h1 class="align-self-center">Quest Liner Calculator</h1>
+    <div class="border pt-4 p-5 w-50 align-self-center" style="max-width: 500px">
+        <div class="mb-3">
+            <label for="setPay" class="form-label">Set Pay</label>
+            <input @bind="setPay" type="text" class="form-control" id="setPay"/>
+        </div>
+        <div class="mb-3">
+            <label for="loaded" class="form-label">Loaded Miles</label>
+            <input @bind="loaded" type="text" class="form-control" id="loaded"/>
+        </div>
+        <div class="mb-3">
+            <label for="unloaded" class="form-label">Unloaded Miles</label>
+            <input @bind="unloaded" type="text" class="form-control" id="unloaded"/>
+        </div>
+        <div>
+            <label for="milesTotal" class="form-label">Total: @MilesTotal().ToString("C")</label>
+        </div>
+        <div>
+            <input class="form-check-input" type="checkbox" @bind="loadCheck" id="loadCheck">
+            <label class="form-check-label" for="loadCheck">Load</label>
+            <input class="form-check-input" type="checkbox" @bind="unloadCheck" id="unloadCheck">
+            <label class="form-check-label" for="unloadCheck">Unload</label>
+            <input class="form-check-input" type="checkbox" @bind="washCheck" id="washCheck">
+            <label class="form-check-label" for="washCheck">Wash</label>
+            <input class="form-check-input" type="checkbox" @bind="suitCheck" id="suitCheck">
+            <label class="form-check-label" for="suitCheck">Suit</label>
+        </div>
+        <div>
+            <label for="checkTotal" class="form-label mt-2">Total: @CheckTotal().ToString("C")</label>
+        </div>
+        <div class="mb-3">
+            <label for="detention1" class="form-label">Detention (18.50)</label>
+            <input @bind="detention1" type="text" class="form-control" id="detention1"/>
+        </div>
+        <div class="mb-3">
+            <label for="detention2" class="form-label">Detention (19.50)</label>
+            <input @bind="detention2" type="text" class="form-control" id="detention2"/>
+        </div>
+        <div>
+            <label for="detTotal" class="form-label">Total: @DetTotal().ToString("C")</label>
+        </div>
+        <div class="mb-3">
+            <label for="setPay" class="form-control">Grand Total: @GrandTotal().ToString("C")</label>
+        </div>
+    </div>
+</div>
+
+@code{
+    double setPay;
+    double loaded;
+    double unloaded;
+    bool loadCheck;
+    bool unloadCheck;
+    bool washCheck;
+    bool suitCheck;
+    double detention1;
+    double detention2;
+
+    double MilesTotal()
+    {
+        return (loaded * .62) + (unloaded * .4);
+    }
+
+    double CheckTotal()
+    {
+        double check = 0;
+        if (loadCheck) check += 25;
+        if (unloadCheck) check += 25;
+        if (washCheck) check += 15;
+        if (suitCheck) check += 10;
+        return check;
+    }
+
+    double DetTotal()
+    {
+        return (detention1 * 18.5) + (detention2 * 19.5);
+    }
+
+    double GrandTotal()
+    {
+        return setPay + MilesTotal() + CheckTotal() + DetTotal();
+    }
+}
