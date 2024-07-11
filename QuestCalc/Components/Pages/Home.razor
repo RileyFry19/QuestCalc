@@ -1,62 +1,103 @@
 ﻿@page "/"
+@inject IJSRuntime JSRuntime
 @rendermode InteractiveServer
 <PageTitle>Calculator</PageTitle>
 
 <style>
-    .form-check-label{
+    .form-check-label {
         margin-right: 25px;
     }
 </style>
 
-<div style="flex-direction: column" class="d-flex">
-    <h1 class="align-self-center">Quest Liner Calculator</h1>
-    <div class="border pt-4 p-5 w-50 align-self-center" style="max-width: 500px">
-        <div class="mb-3">
-            <label for="setPay" class="form-label">Set Pay</label>
-            <input @bind="setPay" type="text" class="form-control" id="setPay"/>
+<div class="container">
+    <div class="row">
+        <div class="col-12 text-center">
+            <h1>Quest Liner Calculator</h1>
         </div>
-        <div class="mb-3">
-            <label for="loaded" class="form-label">Loaded Miles</label>
-            <input @bind="loaded" type="text" class="form-control" id="loaded"/>
-        </div>
-        <div class="mb-3">
-            <label for="unloaded" class="form-label">Unloaded Miles</label>
-            <input @bind="unloaded" type="text" class="form-control" id="unloaded"/>
-        </div>
-        <div>
-            <label for="milesTotal" class="form-label">Total: @MilesTotal().ToString("C")</label>
-        </div>
-        <div>
-            <input class="form-check-input" type="checkbox" @bind="loadCheck" id="loadCheck">
-            <label class="form-check-label" for="loadCheck">Load</label>
-            <input class="form-check-input" type="checkbox" @bind="unloadCheck" id="unloadCheck">
-            <label class="form-check-label" for="unloadCheck">Unload</label>
-            <input class="form-check-input" type="checkbox" @bind="washCheck" id="washCheck">
-            <label class="form-check-label" for="washCheck">Wash</label>
-            <input class="form-check-input" type="checkbox" @bind="suitCheck" id="suitCheck">
-            <label class="form-check-label" for="suitCheck">Suit</label>
-        </div>
-        <div>
-            <label for="checkTotal" class="form-label mt-2">Total: @CheckTotal().ToString("C")</label>
-        </div>
-        <div class="mb-3">
-            <label for="detention1" class="form-label">Detention (18.50)</label>
-            <input @bind="detention1" type="text" class="form-control" id="detention1"/>
-        </div>
-        <div class="mb-3">
-            <label for="detention2" class="form-label">Detention (19.50)</label>
-            <input @bind="detention2" type="text" class="form-control" id="detention2"/>
-        </div>
-        <div>
-            <label for="detTotal" class="form-label">Total: @DetTotal().ToString("C")</label>
-        </div>
-        <div class="mb-3">
-            <label for="setPay" class="form-control">Grand Total: @GrandTotal().ToString("C")</label>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="border pt-4 p-3">
+                <div class="mb-3">
+                    <label for="setPay" class="form-label">Set Pay</label>
+                    <input @bind="setPay" type="text" class="form-control" id="setPay" />
+                </div>
+                <div class="mb-3">
+                    <label for="loaded" class="form-label">Loaded Miles</label>
+                    <input @bind="loaded" type="text" class="form-control" id="loaded" />
+                </div>
+                <div class="mb-3">
+                    <label for="unloaded" class="form-label">Unloaded Miles</label>
+                    <input @bind="unloaded" type="text" class="form-control" id="unloaded" />
+                </div>
+                <div>
+                    <label for="milesTotal" class="form-label">Total: @MilesTotal().ToString("C")</label>
+                </div>
+                <div class="mb-3">
+                    @if (Desktop)
+                    {
+                        <input class="form-check-input" type="checkbox" @bind="loadCheck" id="loadCheck">
+                        <label class="form-check-label" for="loadCheck">Load</label>
+                        <input class="form-check-input" type="checkbox" @bind="unloadCheck" id="unloadCheck">
+                        <label class="form-check-label" for="unloadCheck">Unload</label>
+                        <input class="form-check-input" type="checkbox" @bind="washCheck" id="washCheck">
+                        <label class="form-check-label" for="washCheck">Wash</label>
+                        <input class="form-check-input" type="checkbox" @bind="suitCheck" id="suitCheck">
+                        <label class="form-check-label" for="suitCheck">Suit</label>
+                    }
+                    else
+                    {
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" @bind="loadCheck" id="loadCheck">
+                            <label class="form-check-label" for="loadCheck">Load</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" @bind="unloadCheck" id="unloadCheck">
+                            <label class="form-check-label" for="unloadCheck">Unload</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" @bind="washCheck" id="washCheck">
+                            <label class="form-check-label" for="washCheck">Wash</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" @bind="suitCheck" id="suitCheck">
+                            <label class="form-check-label" for="suitCheck">Suit</label>
+                        </div>
+                    }
+                </div>
+                <div>
+                    <label for="checkTotal" class="form-label mt-2">Total: @CheckTotal().ToString("C")</label>
+                </div>
+                <div class="mb-3">
+                    <label for="detention1" class="form-label">Detention (18.50)</label>
+                    <input @bind="detention1" type="text" class="form-control" id="detention1" />
+                </div>
+                <div class="mb-3">
+                    <label for="detention2" class="form-label">Detention (19.50)</label>
+                    <input @bind="detention2" type="text" class="form-control" id="detention2" />
+                </div>
+                <div>
+                    <label for="detTotal" class="form-label">Total: @DetTotal().ToString("C")</label>
+                </div>
+                <div class="mb-3">
+                    <label for="grandTotal" class="form-control">Grand Total: @GrandTotal().ToString("C")</label>
+                </div>
+                <button type="button" class="btn btn-primary" @onclick="Reset">Reset</button>
+            </div>
         </div>
     </div>
 </div>
 
-@code{
+<script>
+    window.myFunctions = {
+        screen: function(){
+            return window.innerWidth;
+            }
+    }
+</script>
+
+@code {
+    bool Desktop;
     double setPay;
     double loaded;
     double unloaded;
@@ -66,7 +107,24 @@
     bool suitCheck;
     double detention1;
     double detention2;
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await CheckScreenSize();
+        }
+    }
 
+    async Task CheckScreenSize()
+    {
+        var screenWidth = await JSRuntime.InvokeAsync<int>("myFunctions.screen");
+
+        Desktop = screenWidth >= 768;
+
+        StateHasChanged();
+    }
+    
     double MilesTotal()
     {
         return (loaded * .62) + (unloaded * .4);
@@ -90,5 +148,19 @@
     double GrandTotal()
     {
         return setPay + MilesTotal() + CheckTotal() + DetTotal();
+    }
+
+    public Task Reset()
+    {
+        setPay = 0;
+        loaded = 0;
+        unloaded = 0;
+        loadCheck = false;
+        unloadCheck = false;
+        washCheck = false;
+        suitCheck = false;
+        detention1 = 0;
+        detention2 = 0;
+        return Task.CompletedTask;
     }
 }
